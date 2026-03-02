@@ -1,723 +1,1245 @@
+<!-- sjcnd -->
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I'm Selling - Buy & Sell Easily</title>
+    <title>AgriPerfect | Smart Agriculture Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        agri: {
+                            green: { 50:'#f0fdf4', 100:'#dcfce7', 600:'#16a34a', 700:'#15803d', 800:'#1a3a2a' },
+                            amber: { 50:'#fffbeb', 100:'#fef3c7', 500:'#f59e0b', 600:'#d97706' },
+                            red:   { 50:'#fef2f2', 500:'#ef4444' },
+                            blue:  { 50:'#eff6ff', 500:'#3b82f6' },
+                        },
+                        sidebar: { bg:'#1a2e1a', fg:'#c5d4c5', active:'#22763a', hover:'#243d24' },
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --primary: #2563eb;
-            --dark: #1f2937;
-            --success: #16a34a;
-            --header-height: 80px;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            background: #f3f6fb;
-            color: var(--dark);
-        }
-
-        /* HEADER */
-        .main-header {
-            background: #fff;
-            height: var(--header-height);
-            border-bottom: 1px solid #e5e7eb;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: auto;
-            padding: 0 20px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .site-logo {
-            height: 80px;
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .header-search {
-            flex: 1;
-            max-width: 520px;
-            display: flex;
-            background: #f1f5f9;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid #e5e7eb;
-        }
-
-        .header-search input {
-            flex: 1;
-            border: none;
-            padding: 12px 16px;
-            background: transparent;
-            outline: none;
-            font-size: 15px;
-        }
-
-        .search-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0 18px;
-            cursor: pointer;
-            font-size: 18px;
-        }
-
-        .menu {
-            display: flex;
-            align-items: center;
-        }
-
-        .menu a {
-            margin: 0 12px;
-            text-decoration: none;
-            color: #374151;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .menu a:hover {
-            color: var(--primary);
-        }
-
-        .menu a.active {
-            color: var(--primary);
-        }
-
-        .actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .profile-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), #1d4ed8);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .profile-icon:hover {
-            transform: scale(1.05);
-        }
-
-        /* HERO */
-        .hero {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 60px 50px;
-            background: linear-gradient(135deg, #eef2ff, #fdf4ff);
-            border-radius: 20px;
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #1e3a8a, #7c3aed);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            color: #6b7280;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .hero-img {
-            width: 100%;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        /* SECTIONS */
-        .section {
-            max-width: 1200px;
-            margin: 50px auto;
-            padding: 0 20px;
-        }
-
-        .section-title {
-            font-size: 28px;
-            margin-bottom: 25px;
-            font-weight: 700;
-        }
-
-        /* CATEGORIES */
-        .categories-grid {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-
-        .category-pill {
-            padding: 12px 26px;
-            border-radius: 12px;
-            background: #fff;
-            border: 1px solid #e5e7eb;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .category-pill:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        .category-pill.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        /* PRODUCTS */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 26px;
-        }
-
-        .card {
-            background: #fff;
-            border-radius: 18px;
-            overflow: hidden;
-            border: 1px solid #e5e7eb;
-            transition: transform 0.25s, box-shadow 0.25s;
-            cursor: pointer;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-        }
-
-        .card img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-        }
-
-        .card-body {
-            padding: 18px;
-        }
-
-        .card-body h4 {
-            margin: 0 0 8px 0;
-            font-size: 16px;
-            color: var(--dark);
-        }
-
-        .price {
-            color: var(--success);
-            font-weight: 800;
-            font-size: 18px;
-        }
-
-        .category-badge {
-            display: inline-block;
-            background: #f3f4f6;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            color: #6b7280;
-            margin-bottom: 8px;
-        }
-
-        /* BUTTONS */
-        .btn {
-            padding: 12px 24px;
-            border-radius: 10px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 15px;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #1d4ed8;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-        }
-
-        .btn-outline {
-            background: white;
-            border: 2px solid #d1d5db;
-            color: var(--dark);
-        }
-
-        .btn-outline:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        /* STATS SECTION */
-        .stats-section {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            margin: 40px 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            text-align: center;
-        }
-
-        .stat-item h3 {
-            font-size: 36px;
-            color: var(--primary);
-            margin: 0 0 8px 0;
-        }
-
-        .stat-item p {
-            color: #6b7280;
-            margin: 0;
-            font-size: 14px;
-        }
-
-        /* FOOTER */
-        .footer {
-            background: var(--dark);
-            color: white;
-            padding: 60px 20px 30px;
-            margin-top: 80px;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-section h4 {
-            margin-bottom: 20px;
-            font-size: 18px;
-        }
-
-        .footer-section ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 12px;
-        }
-
-        .footer-section ul li a {
-            color: #9ca3af;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .footer-section ul li a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid #374151;
-            color: #9ca3af;
-        }
-
-        /* MOBILE TOGGLE */
-        .mobile-toggle {
-            display: none;
-            font-size: 24px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .mobile-only {
-            display: none;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-            .menu {
-                display: none;
-            }
-
-            .actions {
-                display: none;
-            }
-
-            .mobile-toggle {
-                display: block;
-            }
-
-            .hero {
-                grid-template-columns: 1fr;
-                text-align: center;
-                padding: 40px 30px;
-            }
-
-            .hero h1 {
-                font-size: 36px;
-            }
-
-            .hero-actions {
-                justify-content: center;
-            }
-
-            .site-logo {
-                font-size: 24px;
-            }
-
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 15px;
-            }
-
-            .card img {
-                height: 160px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .hero {
-                padding: 30px 20px;
-            }
-
-            .hero h1 {
-                font-size: 28px;
-            }
-
-            .section-title {
-                font-size: 22px;
-            }
-        }
-
-        /* BADGE STYLES */
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-new {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .badge-hot {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .badge-sale {
-            background: #dcfce7;
-            color: #166534;
-        }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f1f5f1; color: #1a3a1a; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #d4ddd4; border-radius: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+
+        .agri-card { background: #fff; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border: 1px solid #e2ebe2; }
+
+        .sidebar-link { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 8px; font-size: 14px; transition: all 0.15s; color: #c5d4c5; text-decoration: none; cursor: pointer; }
+        .sidebar-link:hover { background: #243d24; }
+        .sidebar-link.active { background: #22763a; color: white; }
+
+        @keyframes slideUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+        .animate-slide-up { animation: slideUp 0.4s ease-out forwards; }
+
+        @keyframes pulseDot { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+        .animate-pulse-dot { animation: pulseDot 1.5s ease-in-out infinite; }
+
+        @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
+        .dot-bounce { animation: bounce 0.6s ease-in-out infinite; }
+
+        #app-root { transition: opacity 0.2s ease-in-out; }
+
+        .chat-bubble-user { background: #15803d; color: white; border-radius: 16px 16px 4px 16px; }
+        .chat-bubble-bot { background: #f1f5f1; color: #1a3a1a; border-radius: 16px 16px 16px 4px; }
+        .chat-bubble-error { background: #fef2f2; border: 1px solid rgba(239,68,68,0.2); border-radius: 16px 16px 16px 4px; }
+
+        .quick-q { width:100%; text-align:left; font-size:12px; padding:8px 12px; border-radius:8px; border:1px solid; display:flex; align-items:flex-start; gap:8px; transition:all 0.15s; cursor:pointer; background: none; }
+        .quick-q:hover { filter: brightness(0.95); }
+        .quick-q:disabled { opacity:0.4; cursor:not-allowed; }
+
+        textarea:focus { outline:none; box-shadow: 0 0 0 2px #22763a40; }
+
+        .stat-badge { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:600; }
+        .badge-green { background:#dcfce7; color:#15803d; }
+        .badge-amber { background:#fef3c7; color:#d97706; }
+        .badge-red   { background:#fef2f2; color:#ef4444; }
+        .badge-blue  { background:#eff6ff; color:#3b82f6; }
+
+        .tooltip { position:relative; }
+        .tooltip:hover::after { content: attr(data-tip); position:absolute; bottom:110%; left:50%; transform:translateX(-50%); background:#1a3a1a; color:#fff; font-size:11px; padding:4px 8px; border-radius:6px; white-space:nowrap; z-index:10; }
+
+        .progress-bar { height:6px; border-radius:999px; overflow:hidden; background:#e2ebe2; }
+        .progress-fill { height:100%; border-radius:999px; transition: width 1s ease; }
+
+        .block-card { border-radius:10px; padding:12px; border:1px solid #e2ebe2; background:#f9faf9; cursor:pointer; transition:all 0.15s; }
+        .block-card:hover { box-shadow: 0 4px 12px rgba(22,163,74,0.12); transform: translateY(-1px); }
+
+        .weather-icon-wrap { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; }
+
+        input[type="text"]:focus { outline:none; box-shadow: 0 0 0 2px #22763a30; }
+
+        .section-title { font-size:13px; font-weight:700; color:#1a3a1a; }
+        .label-xs { font-size:10px; color:#6b7b6b; }
+
+        /* Modal */
+        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:50; display:flex; align-items:center; justify-content:center; }
+        .modal-box { background:#fff; border-radius:16px; padding:24px; width:400px; max-width:90vw; box-shadow:0 20px 60px rgba(0,0,0,0.15); }
+
+        /* Toast */
+        .toast { position:fixed; bottom:24px; right:24px; background:#1a3a1a; color:#fff; padding:10px 18px; border-radius:10px; font-size:13px; z-index:100; animation: slideUp 0.3s ease-out forwards; }
     </style>
 </head>
 <body>
-    <!-- HEADER -->
-    <header class="main-header">
-        <div class="nav-container">
-            <div class="site-logo">I'm Selling 🛒</div>
+<div id="app-root"></div>
 
-            <div class="header-search">
-                <input type="text" placeholder="Search products..." id="searchInput">
-                <button class="search-btn">🔍</button>
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TEMPLATE: DASHBOARD                                        -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<template id="tpl-dashboard">
+<div class="flex min-h-screen">
+
+    <!-- ── Sidebar ── -->
+    <aside class="w-60 bg-sidebar-bg flex flex-col min-h-screen shrink-0">
+        <div class="flex items-center gap-2.5 px-5 py-5">
+            <div class="w-9 h-9 rounded-lg bg-agri-green-600 flex items-center justify-center">
+                <i data-lucide="leaf" class="w-5 h-5 text-white"></i>
             </div>
-
-            <button class="mobile-toggle">☰</button>
-
-            <nav class="menu">
-                <a href="#" class="active">Home</a>
-                <a href="#categories">Categories</a>
-                <a href="#trending">Trending</a>
-                <a href="#about">About</a>
-            </nav>
-
-            <div class="actions">
-                <div class="profile-icon" title="User Profile">K</div>
-                <button class="btn btn-primary">Post an Ad</button>
+            <div>
+                <h1 class="text-base font-bold text-white tracking-tight">AgriPerfect</h1>
+                <p class="text-[10px] text-sidebar-fg opacity-60">Smart Agriculture</p>
             </div>
         </div>
-    </header>
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="hero-text">
-            <h1>Buy & Sell Easily!</h1>
-            <p>Discover great deals or list your own products today. Join thousands of buyers and sellers in Kenya's fastest-growing marketplace.</p>
-            <div class="hero-actions">
-                <button class="btn btn-primary">Get Started</button>
-                <button class="btn btn-outline">Post an Ad</button>
+        <nav class="flex-1 px-3 mt-2 space-y-1">
+            <a class="sidebar-link active" data-page="dashboard">
+                <i data-lucide="layout-dashboard" class="w-[18px] h-[18px]"></i><span>Dashboard</span>
+            </a>
+            <a class="sidebar-link" data-page="dashboard">
+                <i data-lucide="map" class="w-[18px] h-[18px]"></i><span>Farm Blocks</span>
+            </a>
+            <a class="sidebar-link" data-page="dashboard">
+                <i data-lucide="sprout" class="w-[18px] h-[18px]"></i><span>Crop Monitor</span>
+            </a>
+            <a class="sidebar-link" data-page="assistant">
+                <i data-lucide="bot" class="w-[18px] h-[18px]"></i><span>AI Assistant</span>
+            </a>
+            <a class="sidebar-link" data-page="analytics">
+                <i data-lucide="bar-chart-2" class="w-[18px] h-[18px]"></i><span>Analytics</span>
+            </a>
+            <a class="sidebar-link" data-page="dashboard">
+                <i data-lucide="bell" class="w-[18px] h-[18px]"></i><span>Alerts</span>
+                <span class="ml-auto stat-badge badge-red">3</span>
+            </a>
+            <a class="sidebar-link" data-page="dashboard">
+                <i data-lucide="settings" class="w-[18px] h-[18px]"></i><span>Settings</span>
+            </a>
+        </nav>
+
+        <!-- Sidebar Weather Widget -->
+        <div class="mx-3 mb-3 rounded-xl p-3" style="background:#243d24;">
+            <p class="text-[10px] text-sidebar-fg opacity-60 mb-2 uppercase tracking-wider">Today's Weather</p>
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-2xl font-bold text-white">28°C</p>
+                    <p class="text-[10px] text-sidebar-fg opacity-70">Partly Cloudy</p>
+                </div>
+                <i data-lucide="cloud-sun" class="w-9 h-9 text-yellow-300 opacity-80"></i>
+            </div>
+            <div class="flex gap-3 mt-2 text-[10px] text-sidebar-fg opacity-60">
+                <span>💧 65% RH</span>
+                <span>🌬️ 8km/h</span>
+                <span>🌧️ 12mm</span>
             </div>
         </div>
-        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop" 
-             alt="Shopping" 
-             class="hero-img">
-    </section>
 
-    <!-- STATS -->
-    <section class="section">
-        <div class="stats-section">
-            <div class="stat-item">
-                <h3>10,000+</h3>
-                <p>Active Listings</p>
-            </div>
-            <div class="stat-item">
-                <h3>5,000+</h3>
-                <p>Happy Users</p>
-            </div>
-            <div class="stat-item">
-                <h3>1,200+</h3>
-                <p>Daily Visitors</p>
-            </div>
-            <div class="stat-item">
-                <h3>98%</h3>
-                <p>Satisfaction Rate</p>
+        <div class="px-4 py-4 border-t" style="border-color:#243d24;">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-agri-green-600 flex items-center justify-center text-white text-xs font-bold">JK</div>
+                <div>
+                    <p class="text-xs font-medium text-white">John Kamau</p>
+                    <p class="text-[10px] text-sidebar-fg opacity-60">Farm Manager</p>
+                </div>
+                <i data-lucide="log-out" class="w-3.5 h-3.5 text-sidebar-fg opacity-40 ml-auto cursor-pointer hover:opacity-80"></i>
             </div>
         </div>
-    </section>
+    </aside>
 
-    <!-- CATEGORIES -->
-    <section class="section" id="categories">
-        <h2 class="section-title">Featured Categories</h2>
-        <div class="categories-grid">
-            <div class="category-pill active" onclick="filterCategory('All')">All</div>
-            <div class="category-pill" onclick="filterCategory('Electronics')">Electronics</div>
-            <div class="category-pill" onclick="filterCategory('Fashion & Beauty')">Fashion & Beauty</div>
-            <div class="category-pill" onclick="filterCategory('Home & Garden')">Home & Garden</div>
-            <div class="category-pill" onclick="filterCategory('Sports')">Sports</div>
-            <div class="category-pill" onclick="filterCategory('Services')">Services</div>
-            <div class="category-pill" onclick="filterCategory('Jobs')">Jobs</div>
-            <div class="category-pill" onclick="filterCategory('Play to Win')">Play to Win</div>
-        </div>
-    </section>
+    <!-- ── Main Content ── -->
+    <div class="flex-1 flex flex-col overflow-hidden">
 
-    <!-- TRENDING PRODUCTS -->
-    <section class="section" id="trending">
-        <h2 class="section-title">🔥 Trending Now</h2>
-        <div class="products-grid" id="productsGrid">
-            <!-- Products will be inserted here by JavaScript -->
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>About I'm Selling</h4>
-                <ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">How It Works</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Press</a></li>
-                </ul>
+        <!-- Topbar -->
+        <header class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between gap-4">
+            <div class="relative max-w-sm flex-1">
+                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                <input type="text" placeholder="Search blocks, crops, alerts..." class="w-full pl-9 pr-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-700 placeholder:text-gray-400" />
             </div>
-            <div class="footer-section">
-                <h4>Support</h4>
-                <ul>
-                    <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Safety Tips</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">FAQs</a></li>
-                </ul>
+            <div class="flex items-center gap-2">
+                <span class="text-xs text-gray-400 hidden md:block">Long Rains 2026</span>
+                <button id="uploadBtn" class="flex items-center gap-2 px-3 py-2 bg-agri-green-700 text-white rounded-lg text-xs font-medium hover:opacity-90 transition-opacity">
+                    <i data-lucide="upload" class="w-3.5 h-3.5"></i> Upload Imagery
+                </button>
+                <button class="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-800 rounded-lg text-xs font-medium hover:opacity-90 transition-opacity">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Select AOI
+                </button>
+                <button class="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i data-lucide="bell" class="w-4 h-4 text-gray-400"></i>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                </button>
+                <button class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i data-lucide="refresh-cw" class="w-4 h-4 text-gray-400"></i>
+                </button>
             </div>
-            <div class="footer-section">
-                <h4>Legal</h4>
-                <ul>
-                    <li><a href="#">Terms & Conditions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Cookie Policy</a></li>
-                    <li><a href="#">Sitemap</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Connect With Us</h4>
-                <ul>
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">Instagram</a></li>
-                    <li><a href="#">LinkedIn</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; Sample frotend(backend- working on backend) of sample ecommerce - Built with ❤️ By Enock</p>
-        </div>
-    </footer>
+        </header>
 
-    <script>
-        // Sample products data - expanded with more items
-        const products = [
-            // Electronics
-            { name: "iPhone 13 Pro Max", price: 89999, category: "Electronics", badge: "hot", img: "https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=400&h=300&fit=crop" },
-            { name: "Samsung Galaxy S23", price: 75000, category: "Electronics", badge: "new", img: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=300&fit=crop" },
-            { name: "MacBook Pro M2", price: 185000, category: "Electronics", badge: "hot", img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=300&fit=crop" },
-            { name: "Sony WH-1000XM5 Headphones", price: 32000, category: "Electronics", badge: "new", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop" },
-            { name: "iPad Air 2024", price: 65000, category: "Electronics", img: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400&h=300&fit=crop" },
-            { name: "Canon EOS R6", price: 145000, category: "Electronics", badge: "sale", img: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=300&fit=crop" },
-            { name: "PlayStation 5", price: 58000, category: "Electronics", badge: "hot", img: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=400&h=300&fit=crop" },
-            { name: "Apple Watch Series 9", price: 42000, category: "Electronics", badge: "new", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop" },
-            { name: "Dell XPS 15 Laptop", price: 125000, category: "Electronics", img: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=400&h=300&fit=crop" },
-            { name: "Bose QuietComfort Earbuds", price: 28000, category: "Electronics", img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&h=300&fit=crop" },
-            { name: "GoPro Hero 12", price: 45000, category: "Electronics", badge: "new", img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop" },
-            { name: "Samsung 55'' QLED TV", price: 95000, category: "Electronics", badge: "sale", img: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=400&h=300&fit=crop" },
-            
-            // Fashion & Beauty
-            { name: "Designer Leather Handbag", price: 12500, category: "Fashion & Beauty", badge: "hot", img: "https://images.unsplash.com/photo-1591561954557-26941169b49e?w=400&h=300&fit=crop" },
-            { name: "Nike Air Jordan 1", price: 18000, category: "Fashion & Beauty", badge: "new", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop" },
-            { name: "Gucci Sunglasses", price: 25000, category: "Fashion & Beauty", img: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&h=300&fit=crop" },
-            { name: "Rolex Submariner Watch", price: 850000, category: "Fashion & Beauty", badge: "hot", img: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400&h=300&fit=crop" },
-            { name: "Chanel Perfume Set", price: 15000, category: "Fashion & Beauty", img: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=300&fit=crop" },
-            { name: "Adidas Ultraboost Shoes", price: 14500, category: "Fashion & Beauty", badge: "sale", img: "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=400&h=300&fit=crop" },
-            { name: "Leather Jacket - Vintage", price: 8500, category: "Fashion & Beauty", img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=300&fit=crop" },
-            { name: "Makeup Kit Professional", price: 6500, category: "Fashion & Beauty", badge: "new", img: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400&h=300&fit=crop" },
-            
-            // Home & Garden
-            { name: "Nespresso Coffee Machine", price: 22000, category: "Home & Garden", badge: "hot", img: "https://images.unsplash.com/photo-1520970014086-2208d157c9e2?w=400&h=300&fit=crop" },
-            { name: "Dyson Vacuum Cleaner", price: 35000, category: "Home & Garden", badge: "new", img: "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=400&h=300&fit=crop" },
-            { name: "Designer Floor Lamp", price: 8500, category: "Home & Garden", img: "https://images.unsplash.com/photo-1534073828943-f801091bb18c?w=400&h=300&fit=crop" },
-            { name: "Luxury Sofa Set", price: 125000, category: "Home & Garden", badge: "sale", img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop" },
-            { name: "Garden Tool Set", price: 4500, category: "Home & Garden", img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop" },
-            { name: "Smart Home Security System", price: 28000, category: "Home & Garden", badge: "new", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=400&h=300&fit=crop" },
-            { name: "King Size Bed Frame", price: 45000, category: "Home & Garden", img: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=400&h=300&fit=crop" },
-            { name: "Air Purifier", price: 18500, category: "Home & Garden", badge: "hot", img: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&h=300&fit=crop" },
-            
-            // Sports
-            { name: "Treadmill - Commercial Grade", price: 95000, category: "Sports", badge: "hot", img: "https://images.unsplash.com/photo-1576678927484-cc907957088c?w=400&h=300&fit=crop" },
-            { name: "Mountain Bike - Trek", price: 55000, category: "Sports", badge: "new", img: "https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?w=400&h=300&fit=crop" },
-            { name: "Golf Club Set", price: 42000, category: "Sports", img: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=300&fit=crop" },
-            { name: "Gym Equipment Set", price: 75000, category: "Sports", badge: "sale", img: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=300&fit=crop" },
-            { name: "Tennis Racket - Wilson", price: 12000, category: "Sports", img: "https://images.unsplash.com/photo-1622163642998-1ea32b0bbc67?w=400&h=300&fit=crop" },
-            { name: "Yoga Mat Premium", price: 3500, category: "Sports", badge: "new", img: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=400&h=300&fit=crop" },
-            
-            // Services
-            { name: "Web Design Services", price: 25000, category: "Services", badge: "hot", img: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop" },
-            { name: "Photography Package", price: 15000, category: "Services", img: "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=400&h=300&fit=crop" },
-            { name: "Personal Trainer - Monthly", price: 8000, category: "Services", badge: "new", img: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=300&fit=crop" },
-            { name: "Cleaning Services", price: 5000, category: "Services", img: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop" },
-            
-            // Jobs
-            { name: "Software Developer Position", price: 150000, category: "Jobs", badge: "hot", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop" },
-            { name: "Marketing Manager Needed", price: 120000, category: "Jobs", badge: "new", img: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=300&fit=crop" },
-            { name: "Graphic Designer", price: 80000, category: "Jobs", img: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=400&h=300&fit=crop" },
-            
-            // Play to Win
-            { name: "Gaming Laptop Raffle", price: 500, category: "Play to Win", badge: "hot", img: "https://images.unsplash.com/photo-1603481588273-2f908a9a7a1b?w=400&h=300&fit=crop" },
-            { name: "iPhone Giveaway Entry", price: 100, category: "Play to Win", badge: "new", img: "https://images.unsplash.com/photo-1621768216002-5ac171876625?w=400&h=300&fit=crop" },
-            { name: "Cash Prize Competition", price: 250, category: "Play to Win", badge: "hot", img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=400&h=300&fit=crop" }
-        ];
+        <!-- Page Content -->
+        <main class="flex-1 overflow-y-auto p-4 space-y-4">
 
-        let currentCategory = 'All';
-
-        // Display products
-        function displayProducts(category = 'All') {
-            const grid = document.getElementById('productsGrid');
-            const filtered = category === 'All' 
-                ? products 
-                : products.filter(p => p.category === category);
-            
-            grid.innerHTML = filtered.map(product => `
-                <div class="card">
-                    <img src="${product.img}" alt="${product.name}">
-                    <div class="card-body">
-                        <div class="category-badge">${product.category}</div>
-                        ${product.badge ? `<span class="badge badge-${product.badge}">${product.badge}</span>` : ''}
-                        <h4>${product.name}</h4>
-                        <div class="price">KES ${product.price.toLocaleString()}</div>
+            <!-- ── KPI Strip ── -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="agri-card p-4 flex items-center gap-3 animate-slide-up">
+                    <div class="weather-icon-wrap bg-green-50">
+                        <i data-lucide="trending-up" class="w-5 h-5 text-agri-green-600"></i>
+                    </div>
+                    <div>
+                        <p class="label-xs">Total Yield Est.</p>
+                        <p class="text-lg font-bold text-gray-800">86.4 T</p>
+                        <span class="stat-badge badge-green">+12% YoY</span>
                     </div>
                 </div>
-            `).join('');
-        }
-
-        // Filter by category
-        function filterCategory(category) {
-            currentCategory = category;
-            
-            // Update active state
-            document.querySelectorAll('.category-pill').forEach(pill => {
-                pill.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Display filtered products
-            displayProducts(category);
-        }
-
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const filtered = products.filter(p => 
-                p.name.toLowerCase().includes(searchTerm) &&
-                (currentCategory === 'All' || p.category === currentCategory)
-            );
-            
-            const grid = document.getElementById('productsGrid');
-            grid.innerHTML = filtered.map(product => `
-                <div class="card">
-                    <img src="${product.img}" alt="${product.name}">
-                    <div class="card-body">
-                        <div class="category-badge">${product.category}</div>
-                        ${product.badge ? `<span class="badge badge-${product.badge}">${product.badge}</span>` : ''}
-                        <h4>${product.name}</h4>
-                        <div class="price">KES ${product.price.toLocaleString()}</div>
+                <div class="agri-card p-4 flex items-center gap-3 animate-slide-up">
+                    <div class="weather-icon-wrap bg-blue-50">
+                        <i data-lucide="droplets" class="w-5 h-5 text-agri-blue-500"></i>
+                    </div>
+                    <div>
+                        <p class="label-xs">Avg Soil Moisture</p>
+                        <p class="text-lg font-bold text-gray-800">54%</p>
+                        <span class="stat-badge badge-amber">Moderate</span>
                     </div>
                 </div>
-            `).join('');
+                <div class="agri-card p-4 flex items-center gap-3 animate-slide-up">
+                    <div class="weather-icon-wrap bg-amber-50">
+                        <i data-lucide="activity" class="w-5 h-5 text-agri-amber-500"></i>
+                    </div>
+                    <div>
+                        <p class="label-xs">Avg NDVI</p>
+                        <p class="text-lg font-bold text-gray-800">0.58</p>
+                        <span class="stat-badge badge-green">Healthy</span>
+                    </div>
+                </div>
+                <div class="agri-card p-4 flex items-center gap-3 animate-slide-up">
+                    <div class="weather-icon-wrap bg-red-50">
+                        <i data-lucide="alert-triangle" class="w-5 h-5 text-agri-red-500"></i>
+                    </div>
+                    <div>
+                        <p class="label-xs">Active Alerts</p>
+                        <p class="text-lg font-bold text-gray-800">3</p>
+                        <span class="stat-badge badge-red">Action Needed</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── ROW 1: Predicted Yield + Gauge ── -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <!-- Yield Card -->
+                <div class="agri-card overflow-hidden relative animate-slide-up" style="min-height:230px;">
+                    <div class="relative z-10 p-5">
+                        <div class="flex items-start justify-between mb-3">
+                            <div>
+                                <h2 class="font-bold text-gray-800 text-lg">Predicted Maize Yield</h2>
+                                <p class="label-xs mt-0.5">Based on NDVI + Climate + Soil data</p>
+                            </div>
+                            <span class="stat-badge badge-green">On Track</span>
+                        </div>
+                        <div class="flex items-end gap-2 mb-2">
+                            <span class="text-5xl font-bold text-agri-green-600">7.2</span>
+                            <span class="text-2xl font-semibold text-gray-400 mb-1">Tons/ha</span>
+                        </div>
+                        <div class="progress-bar mt-3 mb-1" style="width:200px;">
+                            <div class="progress-fill bg-agri-green-600" style="width:74%;"></div>
+                        </div>
+                        <p class="label-xs">74% of season target achieved</p>
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full h-[110px] bg-gradient-to-t from-green-800/30 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 w-full h-[80px] bg-gradient-to-r from-green-700/20 via-green-500/20 to-yellow-500/20 backdrop-blur-sm"></div>
+                    <div class="absolute bottom-2 left-4 right-4 flex justify-between text-[10px] text-green-800/70 font-medium">
+                        <span>🌽 Block 1: 3.2ha — 3.1T est.</span>
+                        <span>🌽 Block 3: 4.1ha — 4.1T est.</span>
+                    </div>
+                </div>
+
+                <!-- Gauge Card -->
+                <div class="agri-card p-5 animate-slide-up">
+                    <div class="flex items-start justify-between mb-2">
+                        <h2 class="font-bold text-gray-800 text-lg">Yield Assessment</h2>
+                        <button class="text-xs text-agri-green-600 hover:underline">View Report →</button>
+                    </div>
+                    <div class="flex flex-col items-center justify-center py-1">
+                        <svg width="150" height="150" viewBox="0 0 120 120">
+                            <circle cx="60" cy="60" r="54" fill="none" stroke="#e2ebe2" stroke-width="10"/>
+                            <circle cx="60" cy="60" r="54" fill="none" stroke="#16a34a" stroke-width="10" stroke-linecap="round"
+                                stroke-dasharray="339.29" stroke-dashoffset="88.22" transform="rotate(-90 60 60)" style="transition:all 1.2s;"/>
+                            <text x="60" y="53" text-anchor="middle" fill="#1a3a1a" font-size="24" font-weight="bold">74%</text>
+                            <text x="60" y="70" text-anchor="middle" fill="#16a34a" font-size="11" font-weight="600">Good</text>
+                        </svg>
+                        <div class="flex gap-4 mt-2 text-xs text-gray-500">
+                            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-agri-green-600 inline-block"></span> Good (≥70%)</span>
+                            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-agri-amber-500 inline-block"></span> Fair (40–69%)</span>
+                            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-agri-red-500 inline-block"></span> Poor (&lt;40%)</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-gray-100 grid grid-cols-3 gap-2 text-center">
+                        <div><p class="label-xs">Last Season</p><p class="text-sm font-bold text-gray-700">6.4 T/ha</p></div>
+                        <div><p class="label-xs">Target</p><p class="text-sm font-bold text-agri-green-600">7.2 T/ha</p></div>
+                        <div><p class="label-xs">Best Block</p><p class="text-sm font-bold text-gray-700">Block 1</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── ROW 2: NDVI + Climate + Calendar ── -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                <!-- NDVI Chart -->
+                <div class="agri-card p-5 animate-slide-up">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="section-title">NDVI Trend</h3>
+                        <span class="stat-badge badge-green">↑ Healthy</span>
+                    </div>
+                    <div style="position:relative; height:180px;">
+                        <canvas id="ndviChart"></canvas>
+                    </div>
+                    <div class="flex justify-between mt-2 text-[10px] text-gray-400">
+                        <span>Week 1</span><span>Current: <strong class="text-agri-green-600">0.74</strong></span>
+                    </div>
+                </div>
+
+                <!-- Climate & Soil -->
+                <div class="agri-card p-5 animate-slide-up">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="section-title">Climate &amp; Soil Factors</h3>
+                        <i data-lucide="cloud-sun" class="w-4 h-4 text-amber-400"></i>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <div class="flex items-center gap-2.5 p-2 rounded-lg bg-gray-50 hover:bg-red-50 transition-colors">
+                            <div class="weather-icon-wrap bg-red-50 w-8 h-8 rounded-lg">
+                                <i data-lucide="thermometer" class="w-4 h-4 text-agri-red-500"></i>
+                            </div>
+                            <div><p class="label-xs">Temperature</p><p class="text-sm font-semibold text-gray-800">28°C</p></div>
+                        </div>
+                        <div class="flex items-center gap-2.5 p-2 rounded-lg bg-gray-50 hover:bg-blue-50 transition-colors">
+                            <div class="weather-icon-wrap bg-blue-50 w-8 h-8 rounded-lg">
+                                <i data-lucide="droplets" class="w-4 h-4 text-agri-blue-500"></i>
+                            </div>
+                            <div><p class="label-xs">Humidity</p><p class="text-sm font-semibold text-gray-800">65%</p></div>
+                        </div>
+                        <div class="flex items-center gap-2.5 p-2 rounded-lg bg-gray-50 hover:bg-blue-50 transition-colors">
+                            <div class="weather-icon-wrap bg-blue-50 w-8 h-8 rounded-lg">
+                                <i data-lucide="cloud-rain" class="w-4 h-4 text-agri-blue-500"></i>
+                            </div>
+                            <div><p class="label-xs">Rainfall</p><p class="text-sm font-semibold text-gray-800">12mm</p></div>
+                        </div>
+                        <div class="flex items-center gap-2.5 p-2 rounded-lg bg-gray-50 hover:bg-amber-50 transition-colors">
+                            <div class="weather-icon-wrap bg-amber-50 w-8 h-8 rounded-lg">
+                                <i data-lucide="sun" class="w-4 h-4 text-agri-amber-500"></i>
+                            </div>
+                            <div><p class="label-xs">Soil Moisture</p><p class="text-sm font-semibold text-gray-800">54%</p></div>
+                        </div>
+                        <div class="flex items-center gap-2.5 p-2 rounded-lg bg-gray-50 hover:bg-green-50 transition-colors">
+                            <div class="weather-icon-wrap bg-green-50 w-8 h-8 rounded-lg">
+                                <i data-lucide="flask-conical" class="w-4 h-4 text-agri-green-600"></i>
+                            </div>
+                            <div><p class="label-xs">Soil pH</p><p class="text-sm font-semibold text-gray-800">6.4</p></div>
+                        </div>
+                        <div class="flex items-center gap-2.5 p-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                            <div class="weather-icon-wrap bg-gray-100 w-8 h-8 rounded-lg">
+                                <i data-lucide="wind" class="w-4 h-4 text-gray-500"></i>
+                            </div>
+                            <div><p class="label-xs">Wind Speed</p><p class="text-sm font-semibold text-gray-800">8 km/h</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crop Calendar -->
+                <div class="agri-card p-5 animate-slide-up">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i data-lucide="calendar" class="w-4 h-4 text-agri-green-600"></i>
+                        <h3 class="section-title">Crop Calendar</h3>
+                    </div>
+                    <div class="flex justify-between text-xs text-gray-500 mb-1">
+                        <span>Planted: <strong>2024-03-01</strong></span>
+                        <span>Harvest: <strong>~2024-07-09</strong></span>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-3">Day <span class="font-bold text-agri-green-600 text-sm">62</span> of 130 — <span class="font-semibold text-amber-600">Flowering</span></p>
+                    <div class="flex rounded-full overflow-hidden h-3 mb-3 gap-[1px]">
+                        <div class="bg-agri-green-100 rounded-l-full" style="width:7.7%" title="Germination"></div>
+                        <div class="bg-agri-green-700" style="width:26.9%" title="Vegetative"></div>
+                        <div class="bg-agri-amber-500" style="width:19.2%" title="Flowering (Current)"></div>
+                        <div class="bg-agri-amber-600 opacity-30" style="width:23.1%" title="Grain Fill"></div>
+                        <div class="bg-yellow-800 opacity-30 rounded-r-full" style="width:23.1%" title="Maturity"></div>
+                    </div>
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="w-2.5 h-2.5 rounded-full bg-agri-green-100 shrink-0 border border-green-200"></span>
+                            <span class="text-gray-500 flex-1">Germination</span>
+                            <span class="text-gray-400">Day 1–10</span>
+                            <span class="stat-badge badge-green text-[9px]">Done</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="w-2.5 h-2.5 rounded-full bg-agri-green-700 shrink-0"></span>
+                            <span class="text-gray-500 flex-1">Vegetative</span>
+                            <span class="text-gray-400">Day 11–45</span>
+                            <span class="stat-badge badge-green text-[9px]">Done</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="w-2.5 h-2.5 rounded-full bg-agri-amber-500 shrink-0"></span>
+                            <span class="font-bold text-gray-800 flex-1">Flowering</span>
+                            <span class="text-gray-400">Day 46–70</span>
+                            <span class="stat-badge badge-amber text-[9px]">Active</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="w-2.5 h-2.5 rounded-full bg-agri-amber-600 opacity-40 shrink-0"></span>
+                            <span class="text-gray-400 flex-1">Grain Fill</span>
+                            <span class="text-gray-300">Day 71–100</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="w-2.5 h-2.5 rounded-full bg-yellow-800 opacity-40 shrink-0"></span>
+                            <span class="text-gray-400 flex-1">Maturity</span>
+                            <span class="text-gray-300">Day 101–130</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── ROW 3: Farm Blocks + Forecast + Alerts ── -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                <!-- Farm Blocks -->
+                <div class="agri-card p-4 animate-slide-up">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-agri-green-600"></i>
+                            <h3 class="section-title">Farm Blocks</h3>
+                        </div>
+                        <span class="label-xs">12ha Total</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 mb-3">
+                        <div class="block-card">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-xs font-bold text-gray-800">Block 1</span>
+                                <span class="w-2 h-2 rounded-full bg-agri-green-600"></span>
+                            </div>
+                            <p class="label-xs">🌽 Maize · 3.2ha</p>
+                            <div class="mt-2">
+                                <div class="flex justify-between label-xs mb-0.5"><span>NDVI</span><span class="text-agri-green-600 font-semibold">0.74</span></div>
+                                <div class="progress-bar"><div class="progress-fill bg-agri-green-600" style="width:74%"></div></div>
+                            </div>
+                        </div>
+                        <div class="block-card">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-xs font-bold text-gray-800">Block 2</span>
+                                <span class="w-2 h-2 rounded-full bg-agri-amber-500"></span>
+                            </div>
+                            <p class="label-xs">🌾 Wheat · 2.8ha</p>
+                            <div class="mt-2">
+                                <div class="flex justify-between label-xs mb-0.5"><span>NDVI</span><span class="text-agri-amber-500 font-semibold">0.51</span></div>
+                                <div class="progress-bar"><div class="progress-fill bg-agri-amber-500" style="width:51%"></div></div>
+                            </div>
+                        </div>
+                        <div class="block-card">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-xs font-bold text-gray-800">Block 3</span>
+                                <span class="w-2 h-2 rounded-full bg-agri-green-600"></span>
+                            </div>
+                            <p class="label-xs">🌽 Maize · 4.1ha</p>
+                            <div class="mt-2">
+                                <div class="flex justify-between label-xs mb-0.5"><span>NDVI</span><span class="text-agri-green-600 font-semibold">0.68</span></div>
+                                <div class="progress-bar"><div class="progress-fill bg-agri-green-600" style="width:68%"></div></div>
+                            </div>
+                        </div>
+                        <div class="block-card">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-xs font-bold text-gray-800">Block 4</span>
+                                <span class="w-2 h-2 rounded-full bg-agri-red-500"></span>
+                            </div>
+                            <p class="label-xs">🫘 Soybean · 1.9ha</p>
+                            <div class="mt-2">
+                                <div class="flex justify-between label-xs mb-0.5"><span>NDVI</span><span class="text-agri-red-500 font-semibold">0.38</span></div>
+                                <div class="progress-bar"><div class="progress-fill bg-agri-red-500" style="width:38%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 text-[10px] text-gray-500 pt-2 border-t border-gray-100">
+                        <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-agri-green-600 inline-block"></span> Healthy</span>
+                        <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-agri-amber-500 inline-block"></span> Moderate</span>
+                        <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-agri-red-500 inline-block"></span> Stressed</span>
+                    </div>
+                </div>
+
+                <!-- Yield Forecast Chart -->
+                <div class="agri-card p-4 animate-slide-up">
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="section-title">Yield Forecast &amp; Score</h3>
+                        <span class="stat-badge badge-green">7.2 T/ha</span>
+                    </div>
+                    <p class="label-xs mb-3">Actual vs Expected — March to August</p>
+                    <div style="position:relative; height:180px;">
+                        <canvas id="forecastChart"></canvas>
+                    </div>
+                    <div class="flex gap-4 mt-3 text-[10px] text-gray-500 justify-center">
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-2 rounded bg-agri-green-600 inline-block opacity-20"></span>Expected</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-2 rounded bg-agri-green-600 inline-block"></span>Actual</span>
+                    </div>
+                </div>
+
+                <!-- Alerts -->
+                <div class="agri-card p-4 animate-slide-up flex flex-col">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="section-title">Alerts &amp; Notifications</h3>
+                        <span class="stat-badge badge-red">3 Active</span>
+                    </div>
+
+                    <div class="space-y-2 flex-1 overflow-y-auto" style="max-height:220px;">
+                        <div class="bg-agri-amber-50 border-l-4 border-l-amber-500 rounded-lg p-2.5">
+                            <div class="flex items-start gap-2">
+                                <i data-lucide="alert-triangle" class="w-4 h-4 mt-0.5 shrink-0 text-amber-600"></i>
+                                <div class="flex-1">
+                                    <div class="flex justify-between">
+                                        <p class="text-xs font-semibold text-gray-800">Low Soil Moisture</p>
+                                        <span class="stat-badge badge-amber text-[9px]">Warning</span>
+                                    </div>
+                                    <p class="label-xs mt-0.5">Block 4 moisture at 29% — irrigation recommended</p>
+                                    <p class="label-xs mt-1 text-gray-300">2h ago</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-agri-red-50 border-l-4 border-l-red-500 rounded-lg p-2.5">
+                            <div class="flex items-start gap-2">
+                                <i data-lucide="alert-circle" class="w-4 h-4 mt-0.5 shrink-0 text-red-500"></i>
+                                <div class="flex-1">
+                                    <div class="flex justify-between">
+                                        <p class="text-xs font-semibold text-gray-800">Pest Risk: Stalk Borer</p>
+                                        <span class="stat-badge badge-red text-[9px]">Critical</span>
+                                    </div>
+                                    <p class="label-xs mt-0.5">High risk detected in Block 3 based on weather patterns</p>
+                                    <p class="label-xs mt-1 text-gray-300">5h ago</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-agri-blue-50 border-l-4 border-l-blue-500 rounded-lg p-2.5">
+                            <div class="flex items-start gap-2">
+                                <i data-lucide="info" class="w-4 h-4 mt-0.5 shrink-0 text-blue-500"></i>
+                                <div class="flex-1">
+                                    <div class="flex justify-between">
+                                        <p class="text-xs font-semibold text-gray-800">Fertilizer Schedule</p>
+                                        <span class="stat-badge badge-blue text-[9px]">Info</span>
+                                    </div>
+                                    <p class="label-xs mt-0.5">Block 2 due for top-dressing this week</p>
+                                    <p class="label-xs mt-1 text-gray-300">1d ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <p class="label-xs font-semibold uppercase tracking-wider mb-2">Recent Activity</p>
+                        <div class="space-y-1.5">
+                            <div class="flex items-start gap-2">
+                                <i data-lucide="satellite" class="w-3 h-3 text-gray-400 mt-0.5 shrink-0"></i>
+                                <div><p class="text-[10px] text-gray-700">New satellite imagery available</p><p class="label-xs">30m ago</p></div>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <i data-lucide="file-text" class="w-3 h-3 text-gray-400 mt-0.5 shrink-0"></i>
+                                <div><p class="text-[10px] text-gray-700">Weekly yield report generated</p><p class="label-xs">2h ago</p></div>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <i data-lucide="check-circle" class="w-3 h-3 text-agri-green-600 mt-0.5 shrink-0"></i>
+                                <div><p class="text-[10px] text-gray-700">Block 1 irrigation completed</p><p class="label-xs">Yesterday</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── ROW 4: Soil Health + 7-Day Forecast ── -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <!-- Soil Health -->
+                <div class="agri-card p-5 animate-slide-up">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="section-title">Soil Health Overview</h3>
+                        <span class="stat-badge badge-green">Optimal Range</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between label-xs mb-1"><span>Nitrogen (N)</span><span class="font-semibold text-gray-700">High — 68 kg/ha</span></div>
+                            <div class="progress-bar"><div class="progress-fill bg-agri-green-600" style="width:68%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between label-xs mb-1"><span>Phosphorus (P)</span><span class="font-semibold text-gray-700">Medium — 45 kg/ha</span></div>
+                            <div class="progress-bar"><div class="progress-fill bg-agri-amber-500" style="width:45%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between label-xs mb-1"><span>Potassium (K)</span><span class="font-semibold text-gray-700">Good — 72 kg/ha</span></div>
+                            <div class="progress-bar"><div class="progress-fill bg-agri-green-600" style="width:72%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between label-xs mb-1"><span>Organic Matter</span><span class="font-semibold text-gray-700">3.2%</span></div>
+                            <div class="progress-bar"><div class="progress-fill bg-agri-blue-500" style="width:64%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between label-xs mb-1"><span>Soil Moisture (Block 4)</span><span class="font-semibold text-red-500">Critical — 29%</span></div>
+                            <div class="progress-bar"><div class="progress-fill bg-agri-red-500" style="width:29%"></div></div>
+                        </div>
+                    </div>
+                    <p class="label-xs mt-3 text-agri-green-600 font-medium">Last tested: March 1, 2026 · Next: April 1, 2026</p>
+                </div>
+
+                <!-- 7-Day Weather Forecast -->
+                <div class="agri-card p-5 animate-slide-up">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="section-title">7-Day Weather Forecast</h3>
+                        <span class="label-xs">Nairobi Region</span>
+                    </div>
+                    <div class="grid grid-cols-7 gap-1 text-center">
+                        <div class="flex flex-col items-center gap-1 p-1.5 rounded-lg bg-agri-green-600 text-white">
+                            <span class="text-[10px] font-semibold">Mon</span>
+                            <i data-lucide="cloud-sun" class="w-4 h-4"></i>
+                            <span class="text-xs font-bold">28°</span>
+                            <span class="text-[9px] opacity-70">12mm</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 p-1.5 rounded-lg hover:bg-gray-50">
+                            <span class="text-[10px] text-gray-500">Tue</span>
+                            <i data-lucide="cloud-rain" class="w-4 h-4 text-agri-blue-500"></i>
+                            <span class="text-xs font-bold text-gray-700">24°</span>
+                            <span class="text-[9px] text-gray-400">22mm</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 p-1.5 rounded-lg hover:bg-gray-50">
+                            <span class="text-[10px] text-gray-500">Wed</span>
+                            <i data-lucide="cloud-rain" class="w-4 h-4 text-agri-blue-500"></i>
+                            <span class="text-xs font-bold text-gray-700">23°</span>
+                            <span class="text-[9px] text-gray-400">18mm</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 p-1.5 rounded-lg hover:bg-gray-50">
+                            <span class="text-[10px] text-gray-500">Thu</span>
+                            <i data-lucide="cloud" class="w-4 h-4 text-gray-400"></i>
+                            <span class="text-xs font-bold text-gray-700">26°</span>
+                            <span class="text-[9px] text-gray-400">5mm</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 p-1.5 rounded-lg hover:bg-gray-50">
+                            <span class="text-[10px] text-gray-500">Fri</span>
+                            <i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>
+                            <span class="text-xs font-bold text-gray-700">30°</span>
+                            <span class="text-[9px] text-gray-400">0mm</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 p-1.5 rounded-lg hover:bg-gray-50">
+                            <span class="text-[10px] text-gray-500">Sat</span>
+                            <i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>
+                            <span class="text-xs font-bold text-gray-700">31°</span>
+                            <span class="text-[9px] text-gray-400">0mm</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 p-1.5 rounded-lg hover:bg-gray-50">
+                            <span class="text-[10px] text-gray-500">Sun</span>
+                            <i data-lucide="cloud-sun" class="w-4 h-4 text-amber-300"></i>
+                            <span class="text-xs font-bold text-gray-700">29°</span>
+                            <span class="text-[9px] text-gray-400">8mm</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-3 rounded-lg bg-blue-50 border border-blue-100">
+                        <div class="flex items-start gap-2">
+                            <i data-lucide="info" class="w-4 h-4 text-blue-500 shrink-0 mt-0.5"></i>
+                            <p class="text-[11px] text-blue-700"><strong>Forecast Alert:</strong> Heavy rainfall expected Tue–Wed (40mm total). Delay any pesticide application. Ensure field drainage is clear for Block 3 and Block 4.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+</template>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TEMPLATE: AI ASSISTANT                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<template id="tpl-assistant">
+<div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-60 bg-sidebar-bg flex flex-col min-h-screen shrink-0">
+        <div class="flex items-center gap-2.5 px-5 py-5">
+            <div class="w-9 h-9 rounded-lg bg-agri-green-600 flex items-center justify-center">
+                <i data-lucide="leaf" class="w-5 h-5 text-white"></i>
+            </div>
+            <div>
+                <h1 class="text-base font-bold text-white tracking-tight">AgriPerfect</h1>
+                <p class="text-[10px] text-sidebar-fg opacity-60">Smart Agriculture</p>
+            </div>
+        </div>
+        <nav class="flex-1 px-3 mt-2 space-y-1">
+            <a class="sidebar-link" data-page="dashboard"><i data-lucide="layout-dashboard" class="w-[18px] h-[18px]"></i><span>Dashboard</span></a>
+            <a class="sidebar-link" data-page="dashboard"><i data-lucide="map" class="w-[18px] h-[18px]"></i><span>Farm Blocks</span></a>
+            <a class="sidebar-link" data-page="dashboard"><i data-lucide="sprout" class="w-[18px] h-[18px]"></i><span>Crop Monitor</span></a>
+            <a class="sidebar-link active" data-page="assistant"><i data-lucide="bot" class="w-[18px] h-[18px]"></i><span>AI Assistant</span></a>
+            <a class="sidebar-link" data-page="analytics"><i data-lucide="bar-chart-2" class="w-[18px] h-[18px]"></i><span>Analytics</span></a>
+            <a class="sidebar-link" data-page="dashboard"><i data-lucide="bell" class="w-[18px] h-[18px]"></i><span>Alerts</span><span class="ml-auto stat-badge badge-red">3</span></a>
+            <a class="sidebar-link" data-page="dashboard"><i data-lucide="settings" class="w-[18px] h-[18px]"></i><span>Settings</span></a>
+        </nav>
+        <div class="px-4 py-4 border-t" style="border-color:#243d24;">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-agri-green-600 flex items-center justify-center text-white text-xs font-bold">JK</div>
+                <div><p class="text-xs font-medium text-white">John Kamau</p><p class="text-[10px] text-sidebar-fg opacity-60">Farm Manager</p></div>
+            </div>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <header class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i data-lucide="sparkles" class="w-5 h-5 text-agri-green-600"></i>
+                <div>
+                    <h2 class="font-bold text-gray-800 text-sm">AgriPerfect AI Assistant</h2>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-agri-green-600 animate-pulse-dot inline-block"></span>
+                        <span class="text-[10px] text-agri-green-600">Online · Demo Mode</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button id="clearChatBtn" class="text-xs text-gray-400 hover:text-red-500 transition-colors flex items-center gap-1">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Clear Chat
+                </button>
+                <button class="flex items-center gap-2 px-3 py-2 bg-agri-green-700 text-white rounded-lg text-xs font-medium hover:opacity-90">
+                    <i data-lucide="upload" class="w-3.5 h-3.5"></i> Upload Imagery
+                </button>
+            </div>
+        </header>
+
+        <div class="flex-1 flex overflow-hidden">
+
+            <!-- Left Panel -->
+            <div class="w-72 border-r border-gray-200 p-4 flex flex-col gap-4 overflow-y-auto bg-white shrink-0">
+
+                <div>
+                    <p class="text-[10px] font-semibold text-gray-400 mb-2 uppercase tracking-wider">Quick Questions</p>
+                    <div class="space-y-2" id="quick-questions">
+                        <button class="quick-q bg-agri-amber-50 border-amber-200 hover:bg-amber-100" data-q="What fertilizer should I apply to Block 2 this week?">
+                            <i data-lucide="flask-conical" class="w-3.5 h-3.5 mt-0.5 shrink-0 text-amber-500"></i>
+                            What fertilizer for Block 2 this week?
+                        </button>
+                        <button class="quick-q bg-agri-red-50 border-red-200 hover:bg-red-100" data-q="How do I identify and treat maize stalk borer?">
+                            <i data-lucide="bug" class="w-3.5 h-3.5 mt-0.5 shrink-0 text-red-500"></i>
+                            How to treat maize stalk borer?
+                        </button>
+                        <button class="quick-q bg-agri-blue-50 border-blue-200 hover:bg-blue-100" data-q="Will the forecast affect my irrigation schedule?">
+                            <i data-lucide="cloud" class="w-3.5 h-3.5 mt-0.5 shrink-0 text-blue-500"></i>
+                            Will forecast affect irrigation?
+                        </button>
+                        <button class="quick-q bg-green-50 border-green-200 hover:bg-green-100" data-q="When is the best time to harvest Block 3 maize?">
+                            <i data-lucide="sun" class="w-3.5 h-3.5 mt-0.5 shrink-0 text-agri-green-600"></i>
+                            Best time to harvest Block 3?
+                        </button>
+                        <button class="quick-q bg-purple-50 border-purple-200 hover:bg-purple-100" data-q="What is the NDVI status of all my farm blocks?">
+                            <i data-lucide="activity" class="w-3.5 h-3.5 mt-0.5 shrink-0 text-purple-500"></i>
+                            NDVI status of all blocks?
+                        </button>
+                        <button class="quick-q bg-gray-50 border-gray-200 hover:bg-gray-100" data-q="Give me a full farm health summary report.">
+                            <i data-lucide="file-text" class="w-3.5 h-3.5 mt-0.5 shrink-0 text-gray-500"></i>
+                            Full farm health summary
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="text-[10px] font-semibold text-gray-400 mb-2 uppercase tracking-wider">Farm Context</p>
+                    <div class="rounded-xl p-3 bg-green-50 border border-green-100 space-y-1.5 text-xs">
+                        <div class="flex justify-between"><span class="text-gray-500">Active Blocks</span><span class="font-semibold text-gray-800">4</span></div>
+                        <div class="flex justify-between"><span class="text-gray-500">Crops</span><span class="font-semibold text-gray-800">Maize, Wheat, Soy</span></div>
+                        <div class="flex justify-between"><span class="text-gray-500">Total Area</span><span class="font-semibold text-gray-800">12 ha</span></div>
+                        <div class="flex justify-between"><span class="text-gray-500">Season</span><span class="font-semibold text-gray-800">Long Rains 2026</span></div>
+                        <div class="flex justify-between"><span class="text-gray-500">Crop Day</span><span class="font-semibold text-agri-green-600">Day 62 — Flowering</span></div>
+                        <div class="flex justify-between"><span class="text-gray-500">Avg NDVI</span><span class="font-semibold text-gray-800">0.58</span></div>
+                    </div>
+                </div>
+
+                <div class="mt-auto">
+                    <p class="text-[10px] font-semibold text-gray-400 mb-2 uppercase tracking-wider">Conversation Tips</p>
+                    <ul class="space-y-1 text-[10px] text-gray-400">
+                        <li>🌱 Ask about specific blocks by name</li>
+                        <li>📊 Request yield or NDVI analysis</li>
+                        <li>🌧️ Ask weather-related farm advice</li>
+                        <li>🐛 Report pest or disease symptoms</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Chat Area -->
+            <div class="flex-1 flex flex-col bg-gray-50">
+                <div class="flex-1 overflow-y-auto p-6 space-y-4" id="chat-messages">
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 rounded-full bg-agri-green-600 flex items-center justify-center shrink-0">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <div class="max-w-[75%]">
+                            <div class="chat-bubble-bot px-4 py-3 text-sm">
+                                <p class="font-semibold text-agri-green-700 mb-1">👋 Hello, John! I'm your AgriPerfect AI.</p>
+                                <p>I have full context of your <strong>4-block, 12ha farm</strong>. I can help with:</p>
+                                <ul class="mt-1.5 space-y-0.5 text-[12px]">
+                                    <li>🌽 Crop management &amp; yield optimization</li>
+                                    <li>💧 Irrigation scheduling</li>
+                                    <li>🐛 Pest &amp; disease identification</li>
+                                    <li>🧪 Fertilizer recommendations</li>
+                                    <li>📊 NDVI &amp; satellite data interpretation</li>
+                                </ul>
+                                <p class="mt-2 text-xs text-gray-500">What would you like to know today?</p>
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-1">Just now</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 border-t border-gray-200 bg-white">
+                    <div class="flex gap-2 items-end">
+                        <textarea id="chat-input" placeholder="Ask about your crops, soil, pests, weather, irrigation..." rows="2"
+                            class="flex-1 resize-none border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 placeholder:text-gray-400 bg-gray-50"></textarea>
+                        <button id="chat-send" class="p-3 bg-agri-green-700 hover:bg-agri-green-600 text-white rounded-xl transition-colors">
+                            <i data-lucide="send" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                    <p class="text-[10px] text-gray-400 mt-2 text-center">Press <kbd class="px-1 py-0.5 bg-gray-100 rounded text-gray-500">Enter</kbd> to send · <kbd class="px-1 py-0.5 bg-gray-100 rounded text-gray-500">Shift+Enter</kbd> for new line</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</template>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TEMPLATE: ANALYTICS                                        -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<template id="tpl-analytics">
+<div class="flex min-h-screen">
+    <aside class="w-60 bg-sidebar-bg flex flex-col min-h-screen shrink-0">
+        <div class="flex items-center gap-2.5 px-5 py-5">
+            <div class="w-9 h-9 rounded-lg bg-agri-green-600 flex items-center justify-center">
+                <i data-lucide="leaf" class="w-5 h-5 text-white"></i>
+            </div>
+            <div>
+                <h1 class="text-base font-bold text-white tracking-tight">AgriPerfect</h1>
+                <p class="text-[10px] text-sidebar-fg opacity-60">Smart Agriculture</p>
+            </div>
+        </div>
+        <nav class="flex-1 px-3 mt-2 space-y-1">
+            <a class="sidebar-link" data-page="dashboard"><i data-lucide="layout-dashboard" class="w-[18px] h-[18px]"></i><span>Dashboard</span></a>
+            <a class="sidebar-link" data-page="dashboard"><i data-lucide="map" class="w-[18px] h-[18px]"></i><span>Farm Blocks</span></a>
+            <a class="sidebar-link" data-page="dashboard"><i data-lucide="sprout" class="w-[18px] h-[18px]"></i><span>Crop Monitor</span></a>
+            <a class="sidebar-link" data-page="assistant"><i data-lucide="bot" class="w-[18px] h-[18px]"></i><span>AI Assistant</span></a>
+            <a class="sidebar-link active" data-page="analytics"><i data-lucide="bar-chart-2" class="w-[18px] h-[18px]"></i><span>Analytics</span></a>
+            <a class="sidebar-link" data-page="dashboard"><i data-lucide="bell" class="w-[18px] h-[18px]"></i><span>Alerts</span></a>
+            <a class="sidebar-link" data-page="dashboard"><i data-lucide="settings" class="w-[18px] h-[18px]"></i><span>Settings</span></a>
+        </nav>
+        <div class="px-4 py-4 border-t" style="border-color:#243d24;">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-agri-green-600 flex items-center justify-center text-white text-xs font-bold">JK</div>
+                <div><p class="text-xs font-medium text-white">John Kamau</p><p class="text-[10px] text-sidebar-fg opacity-60">Farm Manager</p></div>
+            </div>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <header class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+            <div>
+                <h2 class="font-bold text-gray-800">Farm Analytics</h2>
+                <p class="text-xs text-gray-400">Season: Long Rains 2026 · All Blocks</p>
+            </div>
+            <div class="flex gap-2">
+                <button class="px-3 py-1.5 text-xs rounded-lg bg-agri-green-700 text-white hover:opacity-90">Export PDF</button>
+                <button class="px-3 py-1.5 text-xs rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200">Export CSV</button>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-4 space-y-4">
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="agri-card p-4 text-center animate-slide-up">
+                    <p class="label-xs mb-1">Total Farm Area</p>
+                    <p class="text-2xl font-bold text-agri-green-600">12 ha</p>
+                    <p class="label-xs mt-1">4 active blocks</p>
+                </div>
+                <div class="agri-card p-4 text-center animate-slide-up">
+                    <p class="label-xs mb-1">Projected Revenue</p>
+                    <p class="text-2xl font-bold text-gray-800">KSh 2.4M</p>
+                    <span class="stat-badge badge-green">+18% vs last</span>
+                </div>
+                <div class="agri-card p-4 text-center animate-slide-up">
+                    <p class="label-xs mb-1">Water Used (YTD)</p>
+                    <p class="text-2xl font-bold text-agri-blue-500">840 m³</p>
+                    <span class="stat-badge badge-blue">Efficient</span>
+                </div>
+                <div class="agri-card p-4 text-center animate-slide-up">
+                    <p class="label-xs mb-1">Fertilizer Applied</p>
+                    <p class="text-2xl font-bold text-amber-600">620 kg</p>
+                    <span class="stat-badge badge-amber">On Schedule</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="agri-card p-5 animate-slide-up">
+                    <h3 class="section-title mb-3">NDVI Comparison — All Blocks</h3>
+                    <div style="position:relative; height:220px;">
+                        <canvas id="ndviCompareChart"></canvas>
+                    </div>
+                </div>
+                <div class="agri-card p-5 animate-slide-up">
+                    <h3 class="section-title mb-3">Monthly Rainfall vs Irrigation</h3>
+                    <div style="position:relative; height:220px;">
+                        <canvas id="waterChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="agri-card p-5 animate-slide-up">
+                <h3 class="section-title mb-4">Block Performance Summary</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs">
+                        <thead>
+                            <tr class="border-b border-gray-100">
+                                <th class="text-left py-2 px-3 label-xs font-semibold uppercase">Block</th>
+                                <th class="text-left py-2 px-3 label-xs font-semibold uppercase">Crop</th>
+                                <th class="text-left py-2 px-3 label-xs font-semibold uppercase">Area</th>
+                                <th class="text-left py-2 px-3 label-xs font-semibold uppercase">NDVI</th>
+                                <th class="text-left py-2 px-3 label-xs font-semibold uppercase">Moisture</th>
+                                <th class="text-left py-2 px-3 label-xs font-semibold uppercase">Est. Yield</th>
+                                <th class="text-left py-2 px-3 label-xs font-semibold uppercase">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-50 hover:bg-gray-50">
+                                <td class="py-2.5 px-3 font-semibold text-gray-800">Block 1</td>
+                                <td class="py-2.5 px-3 text-gray-600">🌽 Maize</td>
+                                <td class="py-2.5 px-3 text-gray-600">3.2 ha</td>
+                                <td class="py-2.5 px-3"><span class="font-semibold text-agri-green-600">0.74</span></td>
+                                <td class="py-2.5 px-3 text-gray-600">62%</td>
+                                <td class="py-2.5 px-3 font-semibold text-gray-800">3.1 T</td>
+                                <td class="py-2.5 px-3"><span class="stat-badge badge-green">Healthy</span></td>
+                            </tr>
+                            <tr class="border-b border-gray-50 hover:bg-gray-50">
+                                <td class="py-2.5 px-3 font-semibold text-gray-800">Block 2</td>
+                                <td class="py-2.5 px-3 text-gray-600">🌾 Wheat</td>
+                                <td class="py-2.5 px-3 text-gray-600">2.8 ha</td>
+                                <td class="py-2.5 px-3"><span class="font-semibold text-agri-amber-500">0.51</span></td>
+                                <td class="py-2.5 px-3 text-gray-600">42%</td>
+                                <td class="py-2.5 px-3 font-semibold text-gray-800">2.1 T</td>
+                                <td class="py-2.5 px-3"><span class="stat-badge badge-amber">Moderate</span></td>
+                            </tr>
+                            <tr class="border-b border-gray-50 hover:bg-gray-50">
+                                <td class="py-2.5 px-3 font-semibold text-gray-800">Block 3</td>
+                                <td class="py-2.5 px-3 text-gray-600">🌽 Maize</td>
+                                <td class="py-2.5 px-3 text-gray-600">4.1 ha</td>
+                                <td class="py-2.5 px-3"><span class="font-semibold text-agri-green-600">0.68</span></td>
+                                <td class="py-2.5 px-3 text-gray-600">58%</td>
+                                <td class="py-2.5 px-3 font-semibold text-gray-800">4.1 T</td>
+                                <td class="py-2.5 px-3"><span class="stat-badge badge-green">Healthy</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="py-2.5 px-3 font-semibold text-gray-800">Block 4</td>
+                                <td class="py-2.5 px-3 text-gray-600">🫘 Soybean</td>
+                                <td class="py-2.5 px-3 text-gray-600">1.9 ha</td>
+                                <td class="py-2.5 px-3"><span class="font-semibold text-agri-red-500">0.38</span></td>
+                                <td class="py-2.5 px-3 text-red-500 font-semibold">29%</td>
+                                <td class="py-2.5 px-3 font-semibold text-gray-800">0.8 T</td>
+                                <td class="py-2.5 px-3"><span class="stat-badge badge-red">Stressed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+</template>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- JAVASCRIPT                                                 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    const appRoot = document.getElementById('app-root');
+    let currentPage = 'dashboard';
+    let chatMessages = [];
+    let chatLoading = false;
+
+    // ── Router ────────────────────────────────────────────────
+    function renderPage(page) {
+        currentPage = page || 'dashboard';
+        const tplMap = { dashboard: 'tpl-dashboard', assistant: 'tpl-assistant', analytics: 'tpl-analytics' };
+        const tplId = tplMap[currentPage] || 'tpl-dashboard';
+        const template = document.getElementById(tplId);
+
+        appRoot.style.opacity = 0;
+        setTimeout(() => {
+            appRoot.innerHTML = '';
+            if (template) {
+                appRoot.appendChild(template.content.cloneNode(true));
+                lucide.createIcons();
+                attachListeners();
+            }
+            appRoot.style.opacity = 1;
+        }, 150);
+    }
+
+    function attachListeners() {
+        document.querySelectorAll('[data-page]').forEach(link => {
+            link.addEventListener('click', e => { e.preventDefault(); renderPage(link.dataset.page); });
         });
 
-        // Initial load
-        displayProducts();
-    </script>
+        const uploadBtn = document.getElementById('uploadBtn');
+        if (uploadBtn) uploadBtn.addEventListener('click', () => showToast('📁 File selector opened for satellite imagery'));
+
+        if (currentPage === 'dashboard') initDashboardCharts();
+        if (currentPage === 'assistant') initChat();
+        if (currentPage === 'analytics') initAnalyticsCharts();
+    }
+
+    // ── Toast ─────────────────────────────────────────────────
+    function showToast(msg) {
+        const t = document.createElement('div');
+        t.className = 'toast';
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+
+    // ── Dashboard Charts ──────────────────────────────────────
+    function initDashboardCharts() {
+        const ndviCtx = document.getElementById('ndviChart');
+        if (ndviCtx) {
+            new Chart(ndviCtx, {
+                type: 'line',
+                data: {
+                    labels: ['W1','W2','W3','W4','W5','W6','W7','W8','W9'],
+                    datasets: [{
+                        label: 'NDVI',
+                        data: [0.22, 0.31, 0.42, 0.55, 0.63, 0.68, 0.72, 0.74, 0.71],
+                        borderColor: '#16a34a',
+                        backgroundColor: 'rgba(22,163,74,0.08)',
+                        fill: true, tension: 0.4, borderWidth: 2,
+                        pointRadius: 3, pointBackgroundColor: '#16a34a',
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        y: { min:0, max:1, ticks:{ font:{size:11}, color:'#6b7b6b' }, grid:{ color:'#e2ebe2' } },
+                        x: { ticks:{ font:{size:11}, color:'#6b7b6b' }, grid:{ display:false } }
+                    },
+                    plugins: { legend:{ display:false } }
+                }
+            });
+        }
+
+        const forecastCtx = document.getElementById('forecastChart');
+        if (forecastCtx) {
+            new Chart(forecastCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mar','Apr','May','Jun','Jul','Aug'],
+                    datasets: [
+                        { label:'Expected', data:[2.1,3.5,5.0,6.2,7.0,7.2], backgroundColor:'rgba(22,163,74,0.15)', borderRadius:4 },
+                        { label:'Actual',   data:[1.8,3.2,4.8,6.0,null,null], backgroundColor:'#16a34a', borderRadius:4 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        y: { ticks:{ font:{size:11}, color:'#6b7b6b' }, grid:{ color:'#e2ebe2' } },
+                        x: { ticks:{ font:{size:11}, color:'#6b7b6b' }, grid:{ display:false } }
+                    },
+                    plugins: { legend:{ labels:{ font:{size:10}, usePointStyle:true, pointStyle:'circle' } } }
+                }
+            });
+        }
+    }
+
+    // ── Analytics Charts ──────────────────────────────────────
+    function initAnalyticsCharts() {
+        const ndviCompare = document.getElementById('ndviCompareChart');
+        if (ndviCompare) {
+            new Chart(ndviCompare, {
+                type: 'line',
+                data: {
+                    labels: ['W1','W2','W3','W4','W5','W6','W7','W8','W9'],
+                    datasets: [
+                        { label:'Block 1', data:[0.20,0.30,0.45,0.58,0.65,0.70,0.73,0.74,0.72], borderColor:'#16a34a', tension:0.4, borderWidth:2, pointRadius:2, fill:false },
+                        { label:'Block 2', data:[0.18,0.25,0.35,0.42,0.48,0.51,0.50,0.51,0.49], borderColor:'#f59e0b', tension:0.4, borderWidth:2, pointRadius:2, fill:false },
+                        { label:'Block 3', data:[0.22,0.32,0.43,0.55,0.62,0.66,0.68,0.68,0.67], borderColor:'#3b82f6', tension:0.4, borderWidth:2, pointRadius:2, fill:false },
+                        { label:'Block 4', data:[0.15,0.20,0.28,0.34,0.36,0.38,0.37,0.38,0.36], borderColor:'#ef4444', tension:0.4, borderWidth:2, pointRadius:2, fill:false },
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        y:{ min:0, max:1, ticks:{ font:{size:11}, color:'#6b7b6b' }, grid:{ color:'#e2ebe2' } },
+                        x:{ ticks:{ font:{size:11}, color:'#6b7b6b' }, grid:{ display:false } }
+                    },
+                    plugins:{ legend:{ labels:{ font:{size:10}, usePointStyle:true } } }
+                }
+            });
+        }
+
+        const waterChart = document.getElementById('waterChart');
+        if (waterChart) {
+            new Chart(waterChart, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+                    datasets: [
+                        { label:'Rainfall (mm)', data:[45,60,80,120,95,70], backgroundColor:'rgba(59,130,246,0.3)', borderRadius:4 },
+                        { label:'Irrigation (m³)', data:[200,180,120,80,100,140], backgroundColor:'rgba(22,163,74,0.6)', borderRadius:4 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        y:{ ticks:{ font:{size:11}, color:'#6b7b6b' }, grid:{ color:'#e2ebe2' } },
+                        x:{ ticks:{ font:{size:11}, color:'#6b7b6b' }, grid:{ display:false } }
+                    },
+                    plugins:{ legend:{ labels:{ font:{size:10}, usePointStyle:true } } }
+                }
+            });
+        }
+    }
+
+    // ── Chat ──────────────────────────────────────────────────
+    function initChat() {
+        const input = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('chat-send');
+        const clearBtn = document.getElementById('clearChatBtn');
+
+        chatMessages.forEach(msg => appendMessage(msg));
+
+        sendBtn.addEventListener('click', () => sendChatMessage());
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMessage(); }
+        });
+
+        document.querySelectorAll('[data-q]').forEach(btn => {
+            btn.addEventListener('click', () => { input.value = btn.dataset.q; sendChatMessage(); });
+        });
+
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                chatMessages = [];
+                const messagesDiv = document.getElementById('chat-messages');
+                if (messagesDiv) messagesDiv.innerHTML = '';
+                showToast('🗑️ Chat cleared');
+            });
+        }
+    }
+
+    function sendChatMessage() {
+        const input = document.getElementById('chat-input');
+        const text = input.value.trim();
+        if (!text || chatLoading) return;
+
+        const time = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+        const userMsg = { role:'user', content:text, time };
+        chatMessages.push(userMsg);
+        appendMessage(userMsg);
+        input.value = '';
+        chatLoading = true;
+        showTypingIndicator();
+
+        setTimeout(() => {
+            removeTypingIndicator();
+
+            const responses = {
+                'fertilizer': `🌾 **Block 2 Fertilizer Recommendation:**\n\nBased on Block 2 (Wheat, NDVI 0.51, soil pH 6.4, moisture 42%):\n\n**Recommended Application:**\n• CAN (Calcium Ammonium Nitrate) — 50 kg/ha as top-dressing\n• Apply in early morning to minimize volatilization\n• Soil pH 6.4 is ideal — no lime amendment needed\n\n**Timing:**\n• Best applied after light rain or light irrigation\n• Avoid application before the heavy rainfall forecast Tue–Wed\n\n⚠️ Monitor soil moisture in Block 2 — currently at 42%, approaching the 40% stress threshold.`,
+                'stalk borer': `🐛 **Maize Stalk Borer — Identification & Treatment:**\n\n**Signs to Look For:**\n• "Dead heart" — central leaf whorl yellows and can be pulled out easily\n• Small round holes in stems with frass (sawdust-like waste)\n• Larvae are pinkish-brown, 3–4cm long\n• Wilting despite adequate moisture\n\n**Treatment for Block 3 (4.1ha):**\n• Chemical: Bulldock® (beta-cyfluthrin) at 0.5L/ha — apply during flowering stage\n• Biological: Bt (Bacillus thuringiensis) granules into the whorl (10 granules/plant)\n• Remove and destroy badly infested stems\n• Scout every 3–4 days during the current flowering stage\n\n⚠️ With weather patterns showing 65% humidity, risk remains high. Act within 48 hours.`,
+                'irrigation': `💧 **Irrigation Schedule Assessment:**\n\nCurrent conditions: Temp 28°C · Humidity 65% · Rainfall 12mm\n\n**Immediate Action Required:**\n• **Block 4 (Soybean) — CRITICAL:** Moisture at 29%, well below 45% threshold. Irrigate 25–30mm today.\n\n**This Week:**\n• **Block 2 (Wheat):** Moisture 42% — schedule irrigation within 2–3 days (30mm)\n\n**Hold for Now:**\n• **Blocks 1 & 3:** Currently adequate. Heavy rain forecast Tue–Wed (40mm) should be sufficient.\n\n📅 Recommend delaying any irrigation in Block 1/3 until after Thursday to avoid waterlogging.`,
+                'harvest': `🌽 **Block 3 Maize Harvest Timing:**\n\nCurrent: Day 62 of 130 · Flowering stage · NDVI 0.68\n\n**Estimated Harvest Window:**\n• Grain fill completion: Day ~100 (approximately 38 days)\n• Full maturity: Day 110–120 (48–58 days from today)\n• Target grain moisture for harvest: 13–14%\n\n**What to Watch:**\n• Black layer formation at base of kernel (physiological maturity)\n• Husk browning and silks drying completely\n• NDVI expected to drop to ~0.45–0.50 at maturity\n\n**Pre-Harvest Checklist:**\n• Monitor lodging risk after grain fill (Day 71+)\n• Arrange drying/storage for 4.1ha Maize\n• Check market prices 2–3 weeks before harvest`,
+                'ndvi': `📊 **NDVI Status — All Farm Blocks:**\n\n• **Block 1** (Maize, 3.2ha) — NDVI: **0.74** 🟢 Excellent vegetation health\n• **Block 2** (Wheat, 2.8ha) — NDVI: **0.51** 🟡 Moderate — monitor closely\n• **Block 3** (Maize, 4.1ha) — NDVI: **0.68** 🟢 Good — slight pest risk\n• **Block 4** (Soybean, 1.9ha) — NDVI: **0.38** 🔴 Stressed — requires irrigation\n\n**Farm Average NDVI:** 0.58 (Good)\n\n**Trend:** All blocks have improved since Week 1. Block 4 is the main concern — NDVI has stagnated at 0.38 due to low soil moisture (29%).\n\n💡 Tip: Irrigating Block 4 should help recover NDVI to ~0.55 within 1 week.`,
+                'summary': `📋 **Full Farm Health Summary — March 2026:**\n\n**Overall Status: 🟡 Good with Concerns**\n\n**Crop Stage:** Day 62 — Flowering (Critical Period)\n**Total Area:** 12ha across 4 blocks\n\n**Block Status:**\n• Block 1: Healthy · NDVI 0.74 · No issues\n• Block 2: Moderate · NDVI 0.51 · Fertilizer due\n• Block 3: Good but Pest Risk · NDVI 0.68 · Stalk borer alert\n• Block 4: Stressed · NDVI 0.38 · Critical irrigation needed\n\n**Immediate Actions:**\n1. 🔴 Irrigate Block 4 today (29% moisture)\n2. 🐛 Apply pesticide to Block 3 within 48h\n3. 🌾 Schedule Block 2 fertilizer after Wed rain\n\n**Positive Signals:**\n• Predicted yield 7.2T/ha on track\n• Blocks 1 & 3 performing above average\n• Soil pH across all blocks in optimal range (6.2–6.6)`,
+            };
+
+            let reply = `I've reviewed your question about "${text}".\n\nBased on your farm data (12ha, 4 blocks, Day 62 Flowering):\n\nThis is a demo response. In production, this connects to your AgriPerfect AI backend with live satellite and sensor data.`;
+
+            for (const [key, val] of Object.entries(responses)) {
+                if (text.toLowerCase().includes(key)) { reply = val; break; }
+            }
+
+            const botMsg = { role:'assistant', content:reply, time: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) };
+            chatMessages.push(botMsg);
+            appendMessage(botMsg);
+            chatLoading = false;
+        }, 1500);
+    }
+
+    function appendMessage(msg) {
+        const messagesDiv = document.getElementById('chat-messages');
+        if (!messagesDiv) return;
+        const isUser = msg.role === 'user';
+        const wrapper = document.createElement('div');
+        wrapper.className = `flex gap-3 ${isUser ? 'justify-end' : ''}`;
+
+        const formatted = msg.content
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .split('\n').map(l => `<p class="${l.trim() ? 'mb-0.5' : 'h-2'}">${l}</p>`).join('');
+
+        if (isUser) {
+            wrapper.innerHTML = `
+                <div class="max-w-[70%]">
+                    <div class="chat-bubble-user px-4 py-2.5 text-sm">${formatted}</div>
+                    <p class="text-[10px] text-gray-400 mt-1 text-right">${msg.time}</p>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-agri-green-600 flex items-center justify-center shrink-0 text-white text-xs font-bold">JK</div>
+            `;
+        } else {
+            wrapper.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-agri-green-600 flex items-center justify-center shrink-0">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+                </div>
+                <div class="max-w-[75%]">
+                    <div class="chat-bubble-bot px-4 py-2.5 text-sm">${formatted}</div>
+                    <p class="text-[10px] text-gray-400 mt-1">${msg.time}</p>
+                </div>
+            `;
+        }
+        messagesDiv.appendChild(wrapper);
+        lucide.createIcons({ nodes: [wrapper] });
+        wrapper.scrollIntoView({ behavior:'smooth' });
+    }
+
+    function showTypingIndicator() {
+        const messagesDiv = document.getElementById('chat-messages');
+        if (!messagesDiv) return;
+        const el = document.createElement('div');
+        el.id = 'typing-indicator';
+        el.className = 'flex gap-3';
+        el.innerHTML = `
+            <div class="w-8 h-8 rounded-full bg-agri-green-600 flex items-center justify-center shrink-0">
+                <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+            </div>
+            <div class="chat-bubble-bot px-4 py-3">
+                <div class="flex gap-1.5 items-center">
+                    <span class="w-2 h-2 rounded-full bg-gray-400 dot-bounce" style="animation-delay:0ms"></span>
+                    <span class="w-2 h-2 rounded-full bg-gray-400 dot-bounce" style="animation-delay:150ms"></span>
+                    <span class="w-2 h-2 rounded-full bg-gray-400 dot-bounce" style="animation-delay:300ms"></span>
+                </div>
+            </div>
+        `;
+        messagesDiv.appendChild(el);
+        lucide.createIcons({ nodes: [el] });
+        el.scrollIntoView({ behavior:'smooth' });
+    }
+
+    function removeTypingIndicator() {
+        const el = document.getElementById('typing-indicator');
+        if (el) el.remove();
+    }
+
+    // ── Init ──────────────────────────────────────────────────
+    window.addEventListener('load', () => renderPage('dashboard'));
+</script>
 </body>
 </html>
